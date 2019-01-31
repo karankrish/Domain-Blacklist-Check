@@ -1,0 +1,32 @@
+FROM ubuntu:16.04
+LABEL MAINTAINER Michael Laccetti <michael@laccetti.com> <https://laccetti.com/)
+
+#MAINTANER Your Name "ginishumn@gmail.com"
+
+
+#RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt-get update  && \
+        apt-get install -y python3-pip && \
+        apt-get install gnutls-bin -y && \
+	apt-get install nmap -y && \
+        mkdir log && \
+        touch log/dnslog.log && \
+        chmod 777 log/dnslog.log
+
+
+COPY ./requirements.txt /opt/DomainMonitor/requirements.txt
+
+WORKDIR /opt/DomainMonitor
+
+
+RUN pip3 install -r requirements.txt
+
+
+
+
+
+COPY . /opt/DomainMonitor
+
+ENTRYPOINT [ "python3" ]
+
+CMD [ "DomainBlacklist.py" ]
